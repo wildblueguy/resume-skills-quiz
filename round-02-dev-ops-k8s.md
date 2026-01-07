@@ -274,3 +274,9 @@ spec:
     - name: app
       image: my-image
 ```
+
+### Question 33 — Conceptual — Programmable platform expertise — Kubernetes
+
+What is the difference between **requiredDuringSchedulingIgnoredDuringExecution** and **preferredDuringSchedulingIgnoredDuringExecution**, and when would you use each?
+
+> `requiredDuringSchedulingIgnoredDuringExecution` enforces a hard scheduling constraint that must be satisfied, while `preferredDuringSchedulingIgnoredDuringExecution` expresses a soft preference that the scheduler may violate to improve placement flexibility.
