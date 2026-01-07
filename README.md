@@ -3,6 +3,7 @@
 
 - [Round 1](round-01.md)
 - [Round 2 (focus on dev ops / K8s)](round-02-dev-ops-k8s.md)
+- [Round 3](round-03.md)
 
 ## Prompt V1 (rounds 1-N)
 
