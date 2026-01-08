@@ -67,3 +67,135 @@ after any setup.
 Why can adding logging or print statements sometimes make a bug “disappear”?
 
 > Logging can change execution timing and memory ordering, masking race conditions or other timing-sensitive bugs and making them appear to disappear.
+
+### Question 39 — Hands-on — Programming — Debugging / profiling
+
+Write a short example (language of your choice) that demonstrates **capturing a stack trace** when an error occurs.
+
+```go
+import (
+	"fmt"
+	"runtime/debug"
+)
+
+func main() {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Printf("panic: %v\n%s", r, debug.Stack())
+		}
+	}()
+
+	panic("something went wrong")
+}
+```
+
+This captures and logs the stack trace at the point of failure.
+
+### Question 40 — Conceptual — Business — Software project management
+
+Why is **scope control** often more critical to project success than schedule optimization?
+
+> Controlling scope reduces uncertainty and coordination overhead by keeping work aligned with clearly understood goals, whereas schedule optimization cannot compensate for poorly defined or continuously expanding requirements.
+
+### Question 41 — Conceptual — Software service implementation — Encryption (disk / transport)
+
+What is the practical difference between **encryption at rest** and **encryption in transit**, and why do most systems need both?
+
+> Encryption at rest protects data from compromise via storage media or physical access, while encryption in transit protects data from interception or tampering over networks, addressing different threat models.
+
+### Question 42 — Hands-on — Programming — Serialization / encoding
+
+Write a short example (language of your choice) that shows **JSON serialization** of a struct or object with an **optional field** that is omitted when empty.
+
+```go
+type Payload struct {
+	Name  string `json:"name"`
+	Email string `json:"email,omitempty"`
+}
+
+p := Payload{Name: "Alice"}
+b, _ := json.Marshal(p)
+fmt.Println(string(b)) // {"name":"Alice"}
+```
+
+The `omitempty` tag ensures the optional field is excluded when empty.
+
+### Question 43 — Conceptual — Programming language fluency — Go
+
+Why is it generally discouraged to rely on **`init()` functions** for critical application logic?
+
+> `init()` functions execute implicitly with runtime-defined ordering and hidden side effects, making behavior harder to reason about, test, and control.
+
+### Question 44 — Hands-on — Software development / deployment — Git
+
+Write a short sequence of Git commands that:
+
+* creates a new branch,
+* makes a commit,
+* and rebases that commit onto `main`.
+
+Assume a clean working tree and that `main` is up to date.
+
+```bash
+git checkout -b feature-branch
+# make changes
+git add .
+git commit -m "Add feature"
+git fetch origin
+git rebase origin/main
+```
+
+This creates an isolated branch, commits work, and rebases cleanly onto the latest `main`.
+
+### Question 45 — Conceptual — Programmable platform expertise — Containers / Docker
+
+Why is it considered a best practice to run containers as **non-root** whenever possible?
+
+> Running containers as non-root limits the blast radius of vulnerabilities by preventing container escapes or host compromise through elevated privileges.
+
+### Question 46 — Hands-on — Programming — API design
+
+Write a short example (language of your choice) of an API endpoint or function that demonstrates **idempotency** for a create operation.
+
+```go
+func CreateOrder(idempotencyKey string, payload Order) (Order, error) {
+	if existing, ok := store.Get(idempotencyKey); ok {
+		return existing, nil
+	}
+
+	order := processCreate(payload)
+	store.Put(idempotencyKey, order) // durable + atomic in practice
+	return order, nil
+}
+```
+
+A durable idempotency key ensures repeated requests return the same result without duplicating side effects.
+
+### Question 47 — Conceptual — Software service implementation — Distributed systems
+
+Why is **clock synchronization** unreliable as a source of truth in distributed systems?
+
+> Because clocks can skew or drift and synchronization protocols are themselves subject to network delays and failures, time becomes observer-dependent and unsafe as a global source of truth.
+
+### Question 48 — Hands-on — Programming — Concurrency
+
+Write a short example (language of your choice) that shows **safe concurrent access** to shared state.
+
+```go
+state := 0
+updates := make(chan int)
+
+go func() {
+	for v := range updates {
+		state += v
+	}
+}()
+
+for i := 0; i < 1000; i++ {
+	go func(i int) {
+		updates <- i
+	}(i)
+}
+```
+
+A single goroutine owns the state, and all concurrent access is serialized through a channel, avoiding data races.
