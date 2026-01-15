@@ -199,3 +199,56 @@ for i := 0; i < 1000; i++ {
 ```
 
 A single goroutine owns the state, and all concurrent access is serialized through a channel, avoiding data races.
+
+### Question 49 — Conceptual — Programming — Parsing / meta-programming
+
+Why are **AST-based transformations** generally preferred over regular expressions for non-trivial code manipulation?
+
+> ASTs encode the full syntactic and semantic structure of code, allowing transformations that preserve meaning and correctness, whereas regex operates on raw text without context.
+
+### Question 50 — Hands-on — Software development / deployment — CI/CD
+
+Write a short example of a **GitHub Actions workflow step** that:
+
+* builds a Docker image
+* and fails the pipeline if the build fails.
+
+```yaml
+- name: Build Docker image
+  run: docker build -t my-app:latest .
+```
+
+If the build fails, the step exits non-zero and the workflow fails.
+
+### Question 51 — Conceptual — Business — Software licensing
+
+What is a key risk of incorporating **copyleft-licensed** code into a proprietary product?
+
+> Copyleft licenses can impose reciprocal obligations that require disclosure or licensing of derivative source code, undermining proprietary distribution models.
+
+### Question 52 — Hands-on — Programming — Testing
+
+Write a short example (language of your choice) that demonstrates a **table-driven test**.
+
+```go
+func TestAdd(t *testing.T) {
+	tests := []struct {
+		name     string
+		a, b int
+		want int
+	}{
+		{"both positive", 1, 2, 3},
+		{"with zero", 0, 5, 5},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Add(tt.a, tt.b); got != tt.want {
+				t.Fatalf("got %d, want %d", got, tt.want)
+			}
+		})
+	}
+}
+```
+
+This makes inputs, expectations, and failures explicit and extensible.
