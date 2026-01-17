@@ -251,4 +251,8 @@ func TestAdd(t *testing.T) {
 }
 ```
 
-This makes inputs, expectations, and failures explicit and extensible.
+### Question 53 — Conceptual — Software service implementation — Observability
+
+Why is **structured logging** preferred over plain text logs in distributed systems?
+
+> Structured logging emits machine-parseable fields that enable efficient indexing, querying, and correlation across systems without brittle post-processing.
